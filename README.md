@@ -1,1 +1,1 @@
-A snake game to learn the basics of Asp.Net Core MVC. Servers a React frontend.
+A snake game to learn the basics of Asp.Net Core MVC. Serves a React frontend.
