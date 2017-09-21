@@ -1,0 +1,58 @@
+.title {
+  text-align: center;
+}
+
+.alive-status {
+  text-align: center;
+}
+
+.main-container {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+}
+
+.grid {
+  display: flex;
+  flex-flow: column nowrap;
+  border: 1px solid black;
+  width: 40%;
+  height: 100%;
+}
+
+.grid-row {
+  display: inline-flex;
+}
+
+.grid-cell {
+  width: 100%;
+  border: 1px solid black;
+}
+
+.grid-cell:before {
+  content:'';
+  float:left;
+  padding-top:100%;
+}
+
+.snake-tile {
+  background-color: red;
+}
+
+.apple-tile {
+  background-color: green;
+}
+
+.empty-tile {
+  background-color: white;
+}
+
+.grid-sizer {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.grid-sizer-input {
+  width: 40px;
+  margin-right: 10px;
+}
