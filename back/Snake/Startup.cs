@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using Snake.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Snake
 {
@@ -24,6 +26,14 @@ namespace Snake
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddAuthentication("CookieAuthenticationScheme")
+                    .AddCookie("CookieAuthenticationScheme", options => {
+                        options.LoginPath = "/Auth/Login";
+                    });
+
             services.AddMvc();
         }
 
@@ -37,8 +47,10 @@ namespace Snake
             }
             else
             {
-                app.UseExceptionHandler("/Login/Error");
+                app.UseExceptionHandler("/Auth/Error");
             }
+
+            app.UseAuthentication();
 
             app.UseStaticFiles();
 
@@ -53,7 +65,7 @@ namespace Snake
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Login}/{action=Index}/{id?}");
+                    template: "{controller=Auth}/{action=Index}/{id?}");
             });
         }
     }

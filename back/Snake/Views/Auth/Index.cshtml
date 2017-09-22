@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Snake.Models.User>
+@{
+    ViewData["Title"] = "Front Page";
+}
+
+<h1>Snake Game!</h1>
+@if (ViewData["UserName"] != null)
+{
+    <p>
+        You are: @ViewData["UserName"]. 
+        <a asp-controller="Auth" asp-action="Logout">Logout</a>
+    </p>
+}
+else
+{
+    <p>You're not logged in.</p>
+}
+<p>Register and login to get to the High Scores, or play for fun in the guest mode.</p>
+<ul>
+    <li><a asp-controller="Auth" asp-action="Register">Register</a></li>
+    <li><a asp-controller="Auth" asp-action="Login">Login</a></li>
+    <li><a asp-controller="Game" asp-action="Index">Guest mode</a></li>
+    <li><a asp-controller="Game" asp-action="HighScores">High Scores (requires login!)</a></li>
+</ul>
+
+<hr />
+
+<h2>Currently Registered Users</h2>
+<ul>
+    @foreach(var user in Model)
+    {
+        <li>@Html.DisplayFor(modelItem => user.Name)</li>
+    }
+</ul>
+
