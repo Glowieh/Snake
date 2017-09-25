@@ -2,7 +2,7 @@
 
 $(document).ready(() => {
     $("#register-button").click(() => {
-        if ($("#password").val() === $("#repassword").val()) {
+        if ($("#Password").val() === $("#repassword").val()) {
             $("#register-form").submit();
         }
         else {

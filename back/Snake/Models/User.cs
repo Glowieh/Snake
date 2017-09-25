@@ -10,10 +10,15 @@ namespace Snake.Models
     {
         public int ID { get; set; }
 
+        [RegularExpression(@"^[a-zA-Z''-'\s]*$")]
+        [StringLength(32)]
         [Required]
         public string Name { get; set; }
 
+        [StringLength(32)]
         [Required]
         public string Password { get; set; }
+
+        public ICollection<Score> Scores { get; set; }
     }
 }

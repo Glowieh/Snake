@@ -67,6 +67,7 @@ namespace Snake.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([Bind("Name,Password")] User user)
         {
             if (ModelState.IsValid)
@@ -75,7 +76,8 @@ namespace Snake.Controllers
                 {
                     var claims = new List<Claim>
                     {
-                        new Claim(ClaimTypes.Name, user.Name)
+                        new Claim(ClaimTypes.Name, user.Name),
+                        new Claim(ClaimTypes.Sid, user.ID.ToString())
                     };
 
                     var userIdentity = new ClaimsIdentity(claims, "login");
