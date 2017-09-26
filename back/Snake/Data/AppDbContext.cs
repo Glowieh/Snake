@@ -19,6 +19,10 @@ namespace Snake.Data
                 .WithMany(u => u.Scores)
                 .HasForeignKey(s => s.UserID)
                 .HasConstraintName("ForeignKey_User_Post");
+
+            modelBuilder.Entity<Score>()
+                .Property(s => s.GridSize)
+                .HasComputedColumnSql("[GridWidth] * [GridHeight]");
         }
     }
 }

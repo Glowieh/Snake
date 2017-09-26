@@ -1,7 +1,8 @@
 import React from 'react';
 
-function DeadMessage(props) {
+function StatusMessage(props) {
   let deadMessage;
+  let pointsMessage = "Points: " + props.points;
 
   if(props.headPosition.x < props.gridSize.width && props.headPosition.y < props.gridSize.height &&
      props.headPosition.x >= 0 && props.headPosition.y >= 0) {
@@ -12,10 +13,10 @@ function DeadMessage(props) {
   }
 
   return (
-    <h2 className="alive-status">
-      {props.alive ? "" : deadMessage}
-    </h2>
+    <h4 className="alive-status">
+      {props.alive ? pointsMessage : pointsMessage + " - " + deadMessage}
+    </h4>
   );
 }
 
-export default DeadMessage;
+export default StatusMessage;

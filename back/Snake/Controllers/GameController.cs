@@ -8,6 +8,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Snake.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Snake.Controllers
 {
@@ -26,16 +27,27 @@ namespace Snake.Controllers
         }
 
         [Authorize]
-        public IActionResult HighScores()
+        public async Task<IActionResult> HighScores()
         {
-            return View();
+            var scores = await _context.Scores
+                                        .OrderByDescending(s => s.Points)
+                                        .ThenBy(s => s.GridSize)
+                                        .Take(20)
+                                        .Include(s => s.User)
+                                        .ToListAsync();
+            return View(scores);
         }
 
         [Authorize]
         [HttpPost]
-        public IActionResult AddHighScore(int points)
+        public async Task<IActionResult> AddHighScore([FromBody] Models.Score score)
         {
             int userId;
+
+            if(!HttpContext.User.Identity.IsAuthenticated)
+            {
+                return StatusCode(400);
+            }
 
             try
             {
@@ -46,7 +58,9 @@ namespace Snake.Controllers
                 return StatusCode(400);
             }
 
-            _context.Scores.Add(new Models.Score { Points = points, UserID = userId });
+            score.UserID = userId;
+            _context.Scores.Add(score);
+            await _context.SaveChangesAsync();
 
             return StatusCode(201);
         }

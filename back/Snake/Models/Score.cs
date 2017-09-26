@@ -10,6 +10,10 @@ namespace Snake.Models
         public int ID { get; set; }
         public int Points { get; set; }
         public int UserID { get; set; }
+        public int GridWidth { get; set; }
+        public int GridHeight { get; set; }
+
+        public int GridSize { get; set; }   //computed width*height
 
         public User User { get; set; }
     }

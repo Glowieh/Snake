@@ -24,11 +24,6 @@ namespace Snake.Controllers
 
         public async Task<IActionResult> Index()
         {
-            if(HttpContext.User.Identity.IsAuthenticated)
-            {
-                ViewData["UserName"] = HttpContext.User.Identity.Name;
-            }
-
             return View(await _context.Users.ToListAsync());
         }
 
@@ -70,14 +65,17 @@ namespace Snake.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([Bind("Name,Password")] User user)
         {
+            int? userId;
+
             if (ModelState.IsValid)
             {
-                if (await LoginUserAsync(user.Name, user.Password))
+                userId = await LoginUserAsync(user.Name, user.Password);
+                if (userId != null)
                 {
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, user.Name),
-                        new Claim(ClaimTypes.Sid, user.ID.ToString())
+                        new Claim(ClaimTypes.Sid, userId.ToString())
                     };
 
                     var userIdentity = new ClaimsIdentity(claims, "login");
@@ -106,7 +104,7 @@ namespace Snake.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        private async Task<bool> LoginUserAsync(string username, string password)
+        private async Task<int?> LoginUserAsync(string username, string password)
         {
             var user = await _context.Users
                 .Where(u => u.Name == username)
@@ -114,10 +112,10 @@ namespace Snake.Controllers
 
             if(user != null && user.Password == Helper.CalculateMD5Hash(password))
             {
-                return true;
+                return user.ID;
             }
 
-            return false;
+            return null;
         }
     }
 }

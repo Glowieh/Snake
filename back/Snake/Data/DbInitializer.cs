@@ -26,6 +26,17 @@ namespace Snake.Data
                 context.Users.Add(u);
             }
             context.SaveChanges();
+
+            var scores = new Score[]
+            {
+                new Score{ Points=1, UserID=1, GridWidth=20, GridHeight=20 }
+            };
+
+            foreach (Score s in scores)
+            {
+                context.Scores.Add(s);
+            }
+            context.SaveChanges();
         }
     }
 }
